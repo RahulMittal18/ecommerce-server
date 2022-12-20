@@ -45,7 +45,7 @@ app.use("/api/signout", checkAuth,require("./routes/signOut"));
 app.use("/api/admin", checkAuth,require("./routes/adminRoutes/adminRoutes"));
 
 
-app.use("/api/products", require("./routes/products"));
+app.use("/ecommerceserver18.git/api/products", require("./routes/products"));
 app.use("/api/orders/placeorder",checkAuth, require("./routes/placeOrder"));
 app.use("/api/myorders",checkAuth, require("./routes/myOrders"));
 app.use("/api/saveshippingaddress",checkAuth, require("./routes/saveShippingAddress"));
