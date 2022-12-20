@@ -3,15 +3,18 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const app = express();
 const cors = require("cors");
-const morgan = require("morgan")
+const morgan = require("morgan");
 const checkAuth = require("./middleware/checkAuth");
 const dotenv = require("dotenv");
 dotenv.config();
 
-mongoose.connect("mongodb+srv://Rahul-admin:Rahul.123@cluster0.v5lr1om.mongodb.net/?retryWrites=true&w=majority", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect(
+  "mongodb+srv://Rahul-admin:Rahul.123@cluster0.v5lr1om.mongodb.net/?retryWrites=true&w=majority",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }
+);
 
 // Used to log everything like GET, POST, etc requests
 app.use(morgan("dev"));
@@ -37,25 +40,30 @@ app.use("/", (req, res, next) => {
 });
 
 // To make uploads folder publically available with '/api/videos' route
-app.use(express.static("public"))
+app.use(express.static("public"));
 
 app.use("/api/signup", require("./routes/signUp"));
 app.use("/api/signin", require("./routes/signIn"));
-app.use("/api/signout", checkAuth,require("./routes/signOut"));
-app.use("/api/admin", checkAuth,require("./routes/adminRoutes/adminRoutes"));
+app.use("/api/signout", checkAuth, require("./routes/signOut"));
+app.use("/api/admin", checkAuth, require("./routes/adminRoutes/adminRoutes"));
 
-
-app.use("/ecommerceserver18.git/api/products", require("./routes/products"));
-app.use("/api/orders/placeorder",checkAuth, require("./routes/placeOrder"));
-app.use("/api/myorders",checkAuth, require("./routes/myOrders"));
-app.use("/api/saveshippingaddress",checkAuth, require("./routes/saveShippingAddress"));
-app.use("/api/fetchshippingaddress",checkAuth, require("./routes/fetchShippingAddress"));
-app.use("/api/product/add-review",checkAuth, require("./routes/addReview"));
+app.use("/api/deployments/latest/products", require("./routes/products"));
+app.use("/api/orders/placeorder", checkAuth, require("./routes/placeOrder"));
+app.use("/api/myorders", checkAuth, require("./routes/myOrders"));
+app.use(
+  "/api/saveshippingaddress",
+  checkAuth,
+  require("./routes/saveShippingAddress")
+);
+app.use(
+  "/api/fetchshippingaddress",
+  checkAuth,
+  require("./routes/fetchShippingAddress")
+);
+app.use("/api/product/add-review", checkAuth, require("./routes/addReview"));
 app.use("/api/product/delete-review", require("./routes/deleteReview"));
-app.use("/api/addToCart",checkAuth, require("./routes/addToCart"));
+app.use("/api/addToCart", checkAuth, require("./routes/addToCart"));
 
-
-app.listen(process.env.PORT, ()=>{
-    console.log(`Listening on ${process.env.PORT} port!`);
-})
-
+app.listen(process.env.PORT, () => {
+  console.log(`Listening on ${process.env.PORT} port!`);
+});
