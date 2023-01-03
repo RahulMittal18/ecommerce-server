@@ -8,13 +8,30 @@ const checkAuth = require("./middleware/checkAuth");
 const dotenv = require("dotenv");
 dotenv.config();
 
-mongoose.connect(
-  "mongodb+srv://Rahul-admin:Rahul.123@cluster0.v5lr1om.mongodb.net/?retryWrites=true&w=majority",
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  }
-);
+const port = process.env.PORT;
+
+const DB = process.env.DATABASE_URL;
+mongooseOptions = {
+  autoIndex: false,
+  maxPoolSize: 10,
+  serverSelectionTimeoutMS: 5000,
+  socketTimeoutMS: 45000,
+  family: 4,
+  keepAliveInitialDelay: 300000,
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  minPoolSize: 3,
+};
+
+mongoose.set("strictQuery", true);
+
+mongoose.connect(DB, mongooseOptions).then(() => {
+  console.log("Database Connected !");
+});
+
+mongoose.connection.on("error", (error) => {
+  console.log(error);
+});
 
 // Used to log everything like GET, POST, etc requests
 app.use(morgan("dev"));
@@ -47,7 +64,7 @@ app.use("/api/signin", require("./routes/signIn"));
 app.use("/api/signout", checkAuth, require("./routes/signOut"));
 app.use("/api/admin", checkAuth, require("./routes/adminRoutes/adminRoutes"));
 
-app.use("/api/deployments/latest/products", require("./routes/products"));
+app.use("/api/products", require("./routes/products"));
 app.use("/api/orders/placeorder", checkAuth, require("./routes/placeOrder"));
 app.use("/api/myorders", checkAuth, require("./routes/myOrders"));
 app.use(
@@ -64,6 +81,12 @@ app.use("/api/product/add-review", checkAuth, require("./routes/addReview"));
 app.use("/api/product/delete-review", require("./routes/deleteReview"));
 app.use("/api/addToCart", checkAuth, require("./routes/addToCart"));
 
-app.listen(process.env.PORT, () => {
-  console.log(`Listening on ${process.env.PORT} port!`);
+app.all("*", (req, res) => {
+  res.status(404).json({
+    message: `Can't find ${req.originalUrl} on this server!`,
+  });
+});
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });
