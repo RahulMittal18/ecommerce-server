@@ -6,7 +6,7 @@ const cors = require("cors");
 const morgan = require("morgan");
 const checkAuth = require("./middleware/checkAuth");
 const dotenv = require("dotenv");
-dotenv.config();
+dotenv.config()
 
 const port = process.env.PORT;
 
