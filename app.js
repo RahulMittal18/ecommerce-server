@@ -68,10 +68,11 @@ app.use("/api/admin", checkAuth, require("./routes/adminRoutes/adminRoutes"));
 
 app.post("/api/subscribe-newsletter", checkAuth,async (req, res, next) => {
   try {
+    console.log(req.body);
     await sendMail(
       req.body.email,
-      `<p><b>You have successfully subscribed our newsletter.</b></p>`,
-      "STORE"
+      `<h2>Thanks for subscribing!</h2><p>The Store newsletter is the best way to find out about our current deals and product developments.</p>`,
+      "Welcome to Store!"
     );
     return res.status(200).json({
       data:"successfully mailed"

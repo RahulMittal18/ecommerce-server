@@ -30,7 +30,7 @@ exports.sendMail = async (email, body,subject) => {
         }
     });
 
-    let from = `Admin <${process.env.EMAIL}>`
+    let from = `Store <${process.env.EMAIL}>`
     var mailOptions = {
         from: from,
         to: email,
