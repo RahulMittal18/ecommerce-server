@@ -40,7 +40,8 @@ router.post('/', (req, res, next) => {
             role:user[0].role,
             cart: user[0].cart,
             firstName: user[0].first_name,
-            shippingAddresses: user[0].shipping_addresses
+            shippingAddresses: user[0].shipping_addresses,
+            email: user[0].email
           });
         }
         return res.status(401).json({

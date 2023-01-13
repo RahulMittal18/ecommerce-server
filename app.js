@@ -7,10 +7,12 @@ const morgan = require("morgan");
 const checkAuth = require("./middleware/checkAuth");
 const dotenv = require("dotenv");
 dotenv.config()
+const {sendMail} = require("./routes/mailSender")
 
 const port = process.env.PORT;
 
 const DB = process.env.DATABASE_URL;
+console.log(DB);
 mongooseOptions = {
   autoIndex: false,
   maxPoolSize: 10,
@@ -63,6 +65,22 @@ app.use("/api/signup", require("./routes/signUp"));
 app.use("/api/signin", require("./routes/signIn"));
 app.use("/api/signout", checkAuth, require("./routes/signOut"));
 app.use("/api/admin", checkAuth, require("./routes/adminRoutes/adminRoutes"));
+
+app.post("/api/subscribe-newsletter", checkAuth,async (req, res, next) => {
+  try {
+    await sendMail(
+      req.body.email,
+      `<p><b>You have successfully subscribed our newsletter.</b></p>`,
+      "STORE"
+    );
+    return res.status(200).json({
+      data:"successfully mailed"
+    });
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
+});
 
 app.use("/api/products", require("./routes/products"));
 app.use("/api/orders/placeorder", checkAuth, require("./routes/placeOrder"));
