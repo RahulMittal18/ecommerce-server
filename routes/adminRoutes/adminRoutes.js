@@ -73,6 +73,7 @@ router.post("/add-category", upload.single("cImage"), async (req, res, next) => 
       try {
         let checkCategoryExists = await Category.findOne({
           cName: cName,
+          cType: cType
         });
         if (checkCategoryExists) {
           fs.unlink(filePath, (err) => {
