@@ -55,7 +55,6 @@ router.get("/all-category", async (req, res, next) => {
 });
 
 router.post("/add-category", upload.single("cImage"), async (req, res, next) => {
-    // console.log("why");
     console.log(req.body);
     let { cName, cDescription, cStatus, cType } = req.body;
     let cImage = req.file.filename;
